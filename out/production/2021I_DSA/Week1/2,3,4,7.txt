@@ -1,0 +1,12 @@
+2. Error: Main method not found in class HelloWorld, please define the main method as
+   Main method is not static in class HelloWorld, please define the main method as 
+   Thiếu định dạng kiểu
+   Bị lỗi đầu vào
+3, Tương tự 
+4, Hi, Hi. How are you?
+   Hi, @!&^%. How are you?
+   Hi, 1234. How are you?
+   Lỗi k chạy được trong class
+   Hi, Bob. How are you?
+   Hi, Alice. How are you?
+7, Không chạy được vì thiếu args
