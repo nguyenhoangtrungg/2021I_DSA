@@ -50,7 +50,7 @@ public class EqualStacks {
       else if(data2 == Max) {
         stack2.pop();
       }
-      else if(data3 == Max) {
+      else {
         stack3.pop();
       }
     }
