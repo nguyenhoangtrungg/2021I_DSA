@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Board {
 
-  private int[][] board;
-  private int number;
+  private final int[][] board;
+  private final int number;
 
   // create a board from an n-by-n array of tiles,
   // where tiles[row][col] = tile at (row, col)
@@ -14,7 +14,7 @@ public class Board {
       throw new IllegalArgumentException();
     }
     number = tiles.length;
-    board = new int[number + 5][number + 5];
+    board = new int[number][number];
     for (int i = 0; i < number; i++) {
       for (int j = 0; j < number; j++) {
         board[i][j] = tiles[i][j];
@@ -58,8 +58,13 @@ public class Board {
     for (int i = 0; i < number; i++) {
       for (int j = 0; j < number; j++) {
         int dataInBoard = board[i][j];
+        if (dataInBoard == 0) {
+          continue;
+        }
         if (dataInBoard != realData(i, j)) {
-          cnt += Math.abs(i - dataInBoard) + Math.abs(j - dataInBoard);
+          int realX = (dataInBoard - 1) / number;
+          int realY = (dataInBoard - 1) % number;
+          cnt += Math.abs(i - realX) + Math.abs(j - realY);
         }
       }
     }
@@ -71,7 +76,7 @@ public class Board {
     for (int i = 0; i < number; i++) {
       for (int j = 0; j < number; j++) {
         if (board[i][j] != realData(i, j)) {
-          return false;
+          return i == number - 1 && j == number - 1;
         }
       }
     }
@@ -91,8 +96,10 @@ public class Board {
       return false;
     }
     for (int i = 0; i < board.length; i++) {
-      if (this.board[i] != that.board[i]) {
-        return false;
+      for (int j = 0; j < board.length; j++) {
+        if (this.board[i][j] != that.board[i][j]) {
+          return false;
+        }
       }
     }
     return true;
@@ -100,7 +107,7 @@ public class Board {
 
   // all neighboring boards
   public Iterable<Board> neighbors() {
-    int u, v;
+    int u = 0, v = 0;
     for (int i = 0; i < number; i++) {
       for (int j = 0; j < number; j++) {
         if (board[i][j] == 0) {
@@ -112,21 +119,53 @@ public class Board {
 
     ArrayList<Board> arrayList = new ArrayList<>();
 
+    if (u > 0) {
+      arrayList.add(swap(u, v, u - 1, v));
+    }
 
-    return null;
+    if (u < number - 1) {
+      arrayList.add(swap(u, v, u + 1, v));
+    }
+
+    if (v > 0) {
+      arrayList.add(swap(u, v, u, v - 1));
+    }
+
+    if (v < number - 1) {
+      arrayList.add(swap(u, v, u, v + 1));
+    }
+    return arrayList;
   }
 
   // a board that is obtained by exchanging any pair of tiles
   public Board twin() {
-    return null;
+    if (board[0][0] != 0 && board[0][1] != 0) {
+      return swap(0, 0, 0, 1);
+    } else {
+      return swap(1, 0, 1, 1);
+    }
+  }
+
+  private Board swap(int u, int v, int U, int V) {
+    int[][] tmpBoard = new int[number][number];
+    for (int i = 0; i < number; i++) {
+      System.arraycopy(board[i], 0, tmpBoard[i], 0, number);
+    }
+    tmpBoard[u][v] = board[U][V];
+    tmpBoard[U][V] = board[u][v];
+    return new Board(tmpBoard);
   }
 
   private int realData(int u, int v) {
-    return (u + 1) * (v + 1);
+    return u * number + (v + 1);
   }
 
   // unit testing (not graded)
   public static void main(String[] args) {
+    int[][] a = {{3, 0, 2}, {8, 1, 6}, {7, 5, 4}};
+    int[][] b = {{3, 0, 2}, {8, 1, 6}, {7, 5, 4}};
+    Board board1 = new Board(a);
+    Board board2 = new Board(b);
+    System.out.println(board1.equals(board2));
   }
-
 }

@@ -24,7 +24,7 @@ public class FastCollinearPoints {
 
     int number = points.length;
     Point[] tempPoints = points.clone();
-    Point[] head = new Point[5005];
+    Point[] head = new Point[100001];
     Arrays.sort(tempPoints);
     ArrayList<LineSegment> temp = new ArrayList<>();
 
@@ -92,9 +92,7 @@ public class FastCollinearPoints {
           head[numberOfSegments] = cmpPoints[i];
           numberOfSegments++;
         }
-        if (numberOfSegments == number-1) break;
       }
-
 
       if (numberOfSegments == number-1) break;
     }
